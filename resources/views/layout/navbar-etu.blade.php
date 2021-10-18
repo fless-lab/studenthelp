@@ -9,11 +9,11 @@
             &nbsp;
             &middot;
             &nbsp;
-            <a href="{{route("etudiant.profile")}}" class="{{(request()->route()->getName()=='etudiant.profile')?'active-navlink':''}}">Profile</a>
+            <a href="{{route("etudiant.profile")}}" class="{{(request()->route()->getName()=='etudiant.profile')?'active-navlink':''}}">Mon compte</a>
             &nbsp;
             &middot;
             &nbsp;
-            <a href="#">Déconnexion</a>
+            <a href="{{route('etudiant.deconnecter')}}">Déconnexion</a>
         </div>
         @endif
     </div>

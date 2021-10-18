@@ -29,6 +29,21 @@
                         Dashboard
                     </li>
                 </a>
+                <a href="{{route("projet.index")}}" class="{{(request()->route()->getName()=='projet.index')?'active-link':''}}">
+                    <li class="list-group-item">
+                        Proposer des projets d'interêt
+                    </li>
+                </a>
+                <a href="#" class="">
+                    <li class="list-group-item">
+                        Jobs Vaccances
+                    </li>
+                </a>
+                <a href="#" class="">
+                    <li class="list-group-item">
+                        Voir les offres de stages
+                    </li>
+                </a>
                 <a href="{{route("etudiant.edit_profile")}}" class="{{(request()->route()->getName()=='etudiant.edit_profile')?'active-link':''}}">
                     <li class="list-group-item">
                         Editer le profile

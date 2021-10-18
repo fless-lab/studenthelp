@@ -68,9 +68,6 @@
     @if (session('success'))
         <script>
             swal("Félicitation !", "Inscription reussie, Veuillez verifier votre boite mail afin d'activer votre compte", "success");
-            // toastr.success("{{ session('success') }}", "Félicitation", {
-            //     time0ut: 5000
-            // })
         </script>
     @endif
 

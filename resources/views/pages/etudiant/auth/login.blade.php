@@ -20,6 +20,14 @@
                     </button>
                   </div>
                 @endif
+                @if (session()->get("error-auth-required"))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Attention !</strong> {{session()->get("error-auth-required")}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                @endif
                 <form action="{{route('etudiant.connecter')}}" method="post" role="form" id="etudiant_login_form">
                     @csrf
                     <div class="form-group mt-3">

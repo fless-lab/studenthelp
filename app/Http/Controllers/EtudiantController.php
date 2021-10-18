@@ -54,14 +54,14 @@ class EtudiantController extends Controller
             "prenom"=>$request->prenom,
             "email"=>$request->email,
             "matricule"=>$request->matricule,
-            // "password"=>bcrypt($request->password),
-            "password"=>Hash::make($request->input("password")),
+            "password"=>bcrypt($request->password),
+            //"password"=>Hash::make($request->input("password")),
             "email_verification_code"=>Str::random(40),
         ]);
 
         //Mail::to($request->email)->send(new EmailVerificationMail($etudiant));
 
-        return redirect()->back()->with('etudiant_success_register',"Inscription réussie. SVP veuillez consulter votre boite mail pour le lien de verification.");
+        return redirect()->back()->with('success',"Inscription réussie. SVP veuillez consulter votre boite mail pour le lien de verification.");
     }
 
     public function verify_email($verification_code){
@@ -147,7 +147,6 @@ class EtudiantController extends Controller
             return redirect()->back()->with("error","L'ancien mot de passe ne correspond pas. Veuillez reesayer");
         }
     }
-
 
     public function deconnecterEtudiant(){
         if (session("etudiant")) {

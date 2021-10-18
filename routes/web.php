@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProjetController;
 use App\Models\Etudiant;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PagesController::class,"welcome"]);
-Route::get('/espace-bachelier', [PagesController::class,"bachelier"])->name("bachelier");
-Route::get('/espace-etudiant', [PagesController::class,"etudiant"])->name("etudiant");
-Route::get('/espace-entreprise', [PagesController::class,"entreprise"])->name("entreprise");
+Route::get('/', [PagesController::class, "welcome"]);
+Route::get('/espace-bachelier', [PagesController::class, "bachelier"])->name("bachelier");
+Route::get('/espace-etudiant', [PagesController::class, "etudiant"])->name("etudiant");
+Route::get('/espace-entreprise', [PagesController::class, "entreprise"])->name("entreprise");
 
 
 Route::get('/formations/{nom}', function ($nom) {
@@ -29,28 +30,41 @@ Route::get('/formations/{nom}', function ($nom) {
 
 //Etudiant
 
-Route::get('/etudiant',[EtudiantController::class,"index"])->name("etudiant.index");
+Route::group(["middleware" => ["etudiant_bhist"]], function () {
 
-Route::get("/etudiant/inscription",[EtudiantController::class,"inscription"])->name("etudiant.inscription");
-Route::post("/etudiant/inscription",[EtudiantController::class,"enregistrerEtudiant"])->name("etudiant.enregister");
+    Route::group(["prefix" => "etudiant"], function () {
+        Route::get('/', [EtudiantController::class, "index"])->name("etudiant.index");
 
-Route::get("/etudiant/connexion",[EtudiantController::class,"connexion"])->name("etudiant.connexion");
-Route::post("/etudiant/connexion",[EtudiantController::class,"connecterEtudiant"])->name("etudiant.connecter");
+        Route::group(["middleware" => ["etudiant_guest"]], function () {
+            Route::get("/inscription", [EtudiantController::class, "inscription"])->name("etudiant.inscription");
+            Route::post("/inscription", [EtudiantController::class, "enregistrerEtudiant"])->name("etudiant.enregister");
 
-Route::post("/etudiant/deconnexion",[EtudiantController::class,"deconnecterEtudiant"])->name("etudiant.deconnecter");
-
-Route::post("/etudiant/inscription/check_email_unique",[EtudiantController::class,"check_email_unique"])->name("etudiant.check_email_unique");
-Route::post("/etudiant/inscription/check_matricule_unique",[EtudiantController::class,"check_matricule_unique"])->name("etudiant.check_matricule_unique");
-
-Route::get("/etudiant/inscription/verifier-mail/{verification_code}",[[EtudiantController::class,"verify_email"]])->name("etudiant.verifier_mail");
-
-Route::get("/etudiant/profile",[EtudiantController::class,"profile"])->name("etudiant.profile");
-
-Route::get("/etudiant/changer-mon-mot-de-passe",[EtudiantController::class,"change_password"])->name("etudiant.change_password");
-Route::post("/etudiant/changer-mon-mot-de-passe",[EtudiantController::class,"update_password"])->name("etudiant.update_password");
-
-Route::get("/etudiant/editer-mon-profile",[EtudiantController::class,"edit_profile"])->name("etudiant.edit_profile");
-Route::put("/etudiant/editer-mon-profile",[EtudiantController::class,"update_profile"])->name("etudiant.update_profile");
+            Route::get("/connexion", [EtudiantController::class, "connexion"])->name("etudiant.connexion");
+            Route::post("/connexion", [EtudiantController::class, "connecterEtudiant"])->name("etudiant.connecter");
 
 
+            Route::post("/inscription/check_email_unique", [EtudiantController::class, "check_email_unique"])->name("etudiant.check_email_unique");
+            Route::post("/inscription/check_matricule_unique", [EtudiantController::class, "check_matricule_unique"])->name("etudiant.check_matricule_unique");
 
+            Route::get("/inscription/verifier-mail/{verification_code}", [[EtudiantController::class, "verify_email"]])->name("etudiant.verifier_mail");
+        });
+
+        Route::get("/deconnexion", [EtudiantController::class, "deconnecterEtudiant"])->name("etudiant.deconnecter")->middleware("etudiant_auth");
+
+        Route::group(["middleware" => ["etudiant_auth"]], function () {
+
+            // Profile
+            Route::get("/profile", [EtudiantController::class, "profile"])->name("etudiant.profile");
+
+            Route::get("/changer-mon-mot-de-passe", [EtudiantController::class, "change_password"])->name("etudiant.change_password");
+            Route::post("/changer-mon-mot-de-passe", [EtudiantController::class, "update_password"])->name("etudiant.update_password");
+
+            Route::get("/editer-mon-profile", [EtudiantController::class, "edit_profile"])->name("etudiant.edit_profile");
+            Route::put("/editer-mon-profile", [EtudiantController::class, "update_profile"])->name("etudiant.update_profile");
+
+
+            // Projet
+            Route::resource('/projet', ProjetController::class);
+        });
+    });
+});
