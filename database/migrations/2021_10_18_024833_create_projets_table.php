@@ -18,7 +18,8 @@ class CreateProjetsTable extends Migration
             $table->unsignedBigInteger("etudiant_id");
             $table->string("titre");
             $table->string("domaine");
-            $table->mediumText("description");
+            $table->mediumText("mime")->unique();
+            $table->text("description");
             $table->timestamps();
         });
     }

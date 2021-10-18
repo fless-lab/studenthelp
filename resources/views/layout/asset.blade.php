@@ -59,6 +59,7 @@
     <script src="{{ asset('assets/semantic/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/semantic/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/semantic/sweetalert.min.js') }}"></script>
+    <script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
     <script src="{{ asset('assets/semantic/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('assets/pages/bachelier/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -69,6 +70,7 @@
 
 
     <script>
+        CKEDITOR.replace('summary-ckeditor');
         @if (session('etudiant_success_register'))
             // toastr.success("{{ session('etudiant_success_register') }}","Success",{timeOut:7000})
             // @endif
@@ -265,6 +267,41 @@
                 },
                 confirm_password: {
                     required: "Vous devez confirmer votre mot de passe"
+                }
+            },
+            submitHandler: function(form) {
+                $.LoadingOverlay("show");
+                form.submit();
+            }
+
+        })
+
+
+        $("#projet_create_form").validate({
+            errorClass: "invalid",
+            validClass: "success",
+            rules: {
+                titre: {
+                    required: true,
+                    minLength:5
+                },
+                description: {
+                    required: true,
+                    maxLength:500
+                },
+                domaine: {
+                    required: true
+                },
+            },
+            messages: {
+                titre: {
+                    required: "Veuillez saisir le titre de votre projet"
+                },
+                description: {
+                    required: "Veuillez mentionner la description du projet"
+                },
+                domaine: {
+                    required: "Vous devez choisir le domaine auquel appartient votre projet"
                 }
             },
             submitHandler: function(form) {

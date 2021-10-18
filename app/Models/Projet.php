@@ -13,6 +13,7 @@ class Projet extends Model
         "titre",
         "description",
         "domaine",
-        "etudiant_id"
+        "etudiant_id",
+        "mime"
     ];
 }

@@ -14,7 +14,8 @@ class ProjetController extends Controller
      */
     public function index()
     {
-        return view("pages.etudiant.profile.projet.index");
+        $projets = Projet::where("etudiant_id",session("etudiant.id"))->get();
+        return view("pages.etudiant.profile.projet.index",["projets"=>$projets]);
     }
 
     /**
@@ -35,7 +36,16 @@ class ProjetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Projet::create([
+            "titre" => $request->input("titre"),
+            "domaine" => $request->input("domaine"),
+            "description"=>$request->input("description"),
+            "etudiant_id" => $request->input("etudiant_id"),
+            "mime" => $request->input("mime")
+        ]);
+
+        return redirect()->back()->with('success',"Projet créé avec succès.");
+
     }
 
     /**
@@ -44,9 +54,10 @@ class ProjetController extends Controller
      * @param  \App\Models\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function show(Projet $projet)
+    public function show($mime)
     {
-        //
+        $projet = Projet::where("mime",$mime)->first();
+        return view("pages.etudiant.profile.projet.show",["projet"=>$projet]);
     }
 
     /**
@@ -55,9 +66,10 @@ class ProjetController extends Controller
      * @param  \App\Models\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function edit(Projet $projet)
+    public function edit($mime)
     {
-        return view("pages.etudiant.profile.projet.edit");
+        $projet = Projet::where("mime",$mime)->first();
+        return view("pages.etudiant.profile.projet.edit",$projet);
     }
 
     /**
@@ -69,7 +81,7 @@ class ProjetController extends Controller
      */
     public function update(Request $request, Projet $projet)
     {
-        //
+        //meme chose que store...
     }
 
     /**
@@ -78,8 +90,11 @@ class ProjetController extends Controller
      * @param  \App\Models\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Projet $projet)
+    public function destroy($mime)
     {
-        //
+        $projet = Projet::where("mime",$mime)->first();
+        dd($projet);
+        $projet->delete();
+        return redirect()->route("projet.index");
     }
 }
