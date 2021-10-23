@@ -16,6 +16,7 @@ class CreatePasswordResetsTable extends Migration
         Schema::create('password_resets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("etudiant_id");
+            $table->unsignedBigInteger("entreprise_id");
             $table->string("reset_code");
             $table->timestamps();
         });

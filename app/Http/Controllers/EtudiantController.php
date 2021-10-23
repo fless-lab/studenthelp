@@ -43,12 +43,6 @@ class EtudiantController extends Controller
 
     public function enregistrerEtudiant(Request $request){
 
-        // $request->validate([
-        //     "matricule"=>"required|email|unique:etudiants"
-        // ],[
-        //     "matricule.required"=>"Le numero de carte saisie a déjà été utilisé",
-        // ]);
-
         $etudiant = Etudiant::create([
             "nom"=>$request->nom,
             "prenom"=>$request->prenom,
@@ -59,23 +53,24 @@ class EtudiantController extends Controller
             "email_verification_code"=>Str::random(40),
         ]);
 
-        //Mail::to($request->email)->send(new EmailVerificationMail($etudiant));
+        Mail::to($request->email)->send(new EmailVerificationMail($etudiant));
 
         return redirect()->back()->with('success',"Inscription réussie. SVP veuillez consulter votre boite mail pour le lien de verification.");
     }
 
     public function verify_email($verification_code){
         $etudiant=Etudiant::where("email_verification_code",$verification_code)->first();
+        // dd($etudiant);
         if(!$etudiant){
-            return redirect()->back("etudiant.inscription")->with('error',"URL invalide");
+            return redirect()->route("etudiant.inscription")->with('error_mail_invalid_url',"URL invalide ou expiré");
         }else{
             if($etudiant->email_verified_at){
-                return redirect()->back("etudiant.inscription")->with('error',"Email déjà vérifié.");
+                return redirect()->route("etudiant.inscription")->with('error_mail_already_verified',"Email déjà vérifié.");
             }else{
                 $etudiant->update([
                     "email_verified_at"=>Carbon::now()
                 ]);
-                return redirect()->back("etudiant.inscription")->with('etudiant_success_confirm',"Email vérifié avec succès.");
+                return redirect()->route("etudiant.inscription")->with('etudiant_success_confirm',"Email vérifié avec succès.");
             }
         }
     }
@@ -105,6 +100,7 @@ class EtudiantController extends Controller
                         $request->session()->put("etudiant", $etu);
                         return redirect("/etudiant");
                     }else{
+
                         return redirect()->back()->with("login-error","Identifiant ou mot de passe incorrecte");
                     }
                 }

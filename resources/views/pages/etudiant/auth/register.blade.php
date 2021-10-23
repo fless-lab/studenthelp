@@ -77,5 +77,17 @@
         </script>
     @endif
 
+    @if (Session::has('error_mail_invalid_url'))
+        <script>
+            swal("Erreur !", "URL invalide ou lien de confirmation expiré", "error");
+        </script>
+    @endif
+
+    @if (Session::has('error_mail_already_verified'))
+        <script>
+            swal("Erreur !", "Cette adresse email a déja été vérifié", "warning");
+        </script>
+    @endif
+
 
 @endsection

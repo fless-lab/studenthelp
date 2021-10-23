@@ -310,6 +310,86 @@
             }
 
         })
+
+
+        $("#projet_update_form").validate({
+            errorClass: "invalid",
+            validClass: "success",
+            rules: {
+                titre: {
+                    required: true,
+                    minLength:5
+                },
+                description: {
+                    required: true,
+                    maxLength:500
+                },
+                domaine: {
+                    required: true
+                },
+            },
+            messages: {
+                titre: {
+                    required: "Veuillez saisir le titre de votre projet"
+                },
+                description: {
+                    required: "Veuillez mentionner la description du projet"
+                },
+                domaine: {
+                    required: "Vous devez choisir le domaine auquel appartient votre projet"
+                }
+            },
+            submitHandler: function(form) {
+                $.LoadingOverlay("show");
+                form.submit();
+            }
+
+        })
+
+
+        $("#entreprise_edit_profile_form").validate({
+            errorClass: "invalid",
+            validClass: "success",
+            rules: {
+            nom: {
+                required: true,
+                minlength: 2,
+                maxlength: 100,
+            },
+            type: {
+                required: true,
+            },
+            localisation: {
+                required: true,
+                minlength: 2
+            },
+            phone: {
+                required: true,
+            }
+        },
+        messages: {
+            nom: {
+                required: "Veuillez renseigner le nom de votre entreprise"
+            },
+            localisation: {
+                required: "Veuillez renseigner la localisation de votre entreprise"
+            },
+            phone: {
+                required: "Veuillez mentionner un numero joignable (Appel/Whatsapp)"
+            },
+            type: "Veuillez selectionner le type d'entreprise dont il s'agit"
+        },
+            submitHandler: function(form) {
+                $.LoadingOverlay("show");
+                form.submit();
+            }
+
+        })
+
+
+
+
+
     </script>
 </body>
 

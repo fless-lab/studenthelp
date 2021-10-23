@@ -69,7 +69,7 @@ class ProjetController extends Controller
     public function edit($mime)
     {
         $projet = Projet::where("mime",$mime)->first();
-        return view("pages.etudiant.profile.projet.edit",$projet);
+        return view("pages.etudiant.profile.projet.edit",["projet"=>$projet]);
     }
 
     /**
@@ -79,9 +79,15 @@ class ProjetController extends Controller
      * @param  \App\Models\Projet  $projet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Projet $projet)
+    public function update(Request $request, $mime)
     {
-        //meme chose que store...
+        Projet::where("mime",$mime)->update([
+            "titre" => $request->input("titre"),
+            "domaine" => $request->input("domaine"),
+            "description"=>$request->input("description")
+        ]);
+
+        return redirect()->back()->with('success',"Mise à jour effectuée avec succès.");
     }
 
     /**
@@ -93,7 +99,6 @@ class ProjetController extends Controller
     public function destroy($mime)
     {
         $projet = Projet::where("mime",$mime)->first();
-        dd($projet);
         $projet->delete();
         return redirect()->route("projet.index");
     }

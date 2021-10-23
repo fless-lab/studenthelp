@@ -57,7 +57,7 @@
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                             <div class="features-icons-icon d-flex"><i class="bi-bag m-auto text-primary"></i></div>
                             <h3>Entreprise</h3>
-                            <p class=" mb-0">Vous êtes une Entreprise , Startup , Association etc...</p>
+                            <p class=" mb-0">Vous êtes une Entreprise , Startup ,Particulier , Association etc...</p>
                         </div>
                     </a>
                 </div>
