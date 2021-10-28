@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\EntrepriseEmailVerificationMail;
 use App\Models\Entreprise;
+use App\Models\Etudiant;
 use App\Models\Projet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class EntrepriseController extends Controller
         ]);
 
         Mail::to($request->email)->send(new EntrepriseEmailVerificationMail($entreprise));
+        // dd(Mail::to($request->email),new EntrepriseEmailVerificationMail($entreprise));
         session()->flash("success","Inscription reussie");
         return redirect()->back()->with('success',"Inscription réussie. SVP veuillez consulter votre boite mail pour le lien de verification.");
     }
@@ -149,9 +151,16 @@ class EntrepriseController extends Controller
     }
 
 
-    public function voirProjets(){
+    public function voirAllProjets(){
         $projets = Projet::all();
-        return view("pages.entreprise.profile.services.projet.index");
+        $etudiants = Etudiant::all();
+        return view("pages.entreprise.profile.services.projet.index",["projets"=>$projets,"etudiants"=>$etudiants]);
+    }
+
+    public function voirLeProjet($mime){
+        $projet = Projet::where("mime",$mime)->first();
+        $etudiants = Etudiant::all();
+        return view("pages.entreprise.profile.services.projet.show",["projet"=>$projet,"etudiants"=>$etudiants]);
     }
 
 }

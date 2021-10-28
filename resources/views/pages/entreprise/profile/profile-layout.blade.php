@@ -29,21 +29,21 @@
                         Dashboard
                     </li>
                 </a>
-                <a href="" class="{{(request()->route()->getName()=='projet.index')?'active-link':''}}">
+                <a href="{{route("entreprise.projets")}}" class="{{(request()->route()->getName()=='entreprise.projets')?'active-link':''}}">
                     <li class="list-group-item">
                         Voir les projets d'interêt
                     </li>
                 </a>
-                <a href="#" class="">
+                <a href="{{route('alert-etudiant.index')}}" class="{{(request()->route()->getName()=='alert-etudiant.index')?'active-link':''}}">
                     <li class="list-group-item">
-                        Proposer des jobs vacances
+                        Proposer des Jobs/Stages
                     </li>
                 </a>
-                <a href="#" class="">
+                {{-- <a href="#" class="">
                     <li class="list-group-item">
                         Proposer des offres de stages
                     </li>
-                </a>
+                </a> --}}
                 <a href="{{route("entreprise.edit_profile")}}" class="{{(request()->route()->getName()=='entreprise.edit_profile')?'active-link':''}}">
                     <li class="list-group-item">
                         Editer le profile

@@ -311,6 +311,41 @@
 
         })
 
+        $("#offre_create_form").validate({
+            errorClass: "invalid",
+            validClass: "success",
+            rules: {
+                titre: {
+                    required: true,
+                    minLength:5
+                },
+                description: {
+                    required: true,
+                    maxLength:2
+                },
+                tag: {
+                    required: true
+                },
+            },
+            messages: {
+                titre: {
+                    required: "Veuillez saisir le titre de l'offre"
+                },
+                description: {
+                    required: "Veuillez mentionner la description de l'offre",
+                    maxLength:"La description ne peut depasser 300 caractères"
+                },
+                tag: {
+                    required: "Vous devez choisir le type d'offre dont il s'agit",
+                }
+            },
+            submitHandler: function(form) {
+                $.LoadingOverlay("show");
+                form.submit();
+            }
+
+        })
+
 
         $("#projet_update_form").validate({
             errorClass: "invalid",

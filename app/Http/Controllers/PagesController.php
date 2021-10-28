@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlertEtudiant;
+use App\Models\Entreprise;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -17,7 +19,9 @@ class PagesController extends Controller
 
 
     public function etudiant(){
-        return view("pages.etudiant.index");
+        $alerts = AlertEtudiant::all();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.index",["alerts"=>$alerts,"entreprises"=>$entreprises]);
     }
 
 

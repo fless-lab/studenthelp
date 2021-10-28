@@ -6,6 +6,10 @@ use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Mail\EmailVerificationMail;
+use App\Mail\EtudiantForgetPasswordMail;
+use App\Models\AlertEtudiant;
+use App\Models\Entreprise;
+use App\Models\PasswordReset;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -13,7 +17,9 @@ use Illuminate\Support\Facades\Mail;
 class EtudiantController extends Controller
 {
     public function index(){
-        return view("pages.etudiant.index");
+        $alerts = AlertEtudiant::all();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.index",["alerts"=>$alerts,"entreprises"=>$entreprises]);
     }
 
     public function inscription(){
@@ -148,6 +154,70 @@ class EtudiantController extends Controller
         if (session("etudiant")) {
             session()->pull('etudiant');
             return redirect()->route("etudiant");
+        }
+    }
+
+
+    public function voirAllJobs(){
+        $jobs = AlertEtudiant::where("tag","Job")->get();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.profile.job.index",["jobs"=>$jobs,"entreprises"=>$entreprises]);
+    }
+
+    public function voirLeJob($mime){
+        $job = AlertEtudiant::where("mime",$mime)->first();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.profile.job.show",["job"=>$job,"entreprises"=>$entreprises]);
+    }
+
+    public function voirAllStages(){
+        $stages = AlertEtudiant::where("tag","Stage")->get();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.profile.stage.index",["stages"=>$stages,"entreprises"=>$entreprises]);
+    }
+
+    public function voirLeStage($mime){
+        $stage = AlertEtudiant::where("mime",$mime)->first();
+        $entreprises = Entreprise::all();
+        return view("pages.etudiant.profile.stage.show",["stage"=>$stage,"entreprises"=>$entreprises]);
+    }
+
+
+    public function mot_de_passe_oublie(){
+        return view("pages.etudiant.auth.forget_password");
+    }
+
+    public function reset_mot_de_passe_link(Request $request){
+        $request->validate([
+            'email'=>"required|email"
+        ]);
+
+        $etudiant = Etudiant::where("email",$request->email)->first();
+        // dd($etudiant);
+
+        if(!$etudiant){
+            return redirect()->back()->with("error","Utilisateur non trouvé");
+        }else{
+            $reset_code = Str::random(200);
+            PasswordReset::create([
+                "etudiant_id"=>$etudiant->id,
+                "reset_code"=>$reset_code
+            ]);
+
+            Mail::to($request->email)->send(new EtudiantForgetPasswordMail($etudiant->prenom,$reset_code));
+
+            return redirect()->back()->with("success","Nous vous avons envoyé un lien de reinitialisation du mot de passe. Verifiez votre boite mail.");
+        }
+    }
+
+    public function reset_mot_de_passe($reset_code){
+        dd("$reset_code");
+        $password_reset_data = PasswordReset::where("reset_code",$reset_code)->first();
+
+        if(!$password_reset_data || Carbon::now()->subMinutes(60)>$password_reset_data->created_at){
+            return redirect()->route("etudiant.reset_password")->with("error","Le lien est invalide ou expiré");
+        }else{
+            return view("pages.etudiant.auth.reset_password",["reset_code"=>$reset_code]);
         }
     }
 }

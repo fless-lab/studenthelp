@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="description">Décrivez le projet (Max : 500 caractère)</label>
                     {{-- id="summary-ckeditor" --}}
-                    <textarea type="text" class="form-control"
+                    <textarea type="text" maxlength="500" class="form-control"
                     placeholder="Description complete/contenu du projet" name="description" required autocomplete="description"  cols="10" rows="5"></textarea>
                 </div>
                 <div class="mx-auto text-center">

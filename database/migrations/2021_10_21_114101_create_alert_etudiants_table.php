@@ -18,7 +18,8 @@ class CreateAlertEtudiantsTable extends Migration
             $table->string('tag');
             $table->string("entreprise_id");
             $table->string("titre");
-            $table->string("description");
+            $table->mediumText("description");
+            $table->string("lien")->nullable();
             $table->string("mime");
             $table->timestamps();
         });

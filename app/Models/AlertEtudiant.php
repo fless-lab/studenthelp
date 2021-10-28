@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class AlertEtudiant extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "tag",
+        "titre",
+        "description",
+        "mime",
+        "entreprise_id",
+        "lien"
+    ];
 }

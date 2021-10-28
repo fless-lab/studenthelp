@@ -7,19 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class EntrepriseEmailVerificationMail extends Mailable
+class EtudiantForgetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $entreprise;
-
+    public $etudiant_nom;
+    public $reset_code;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($entreprise)
+    public function __construct($etudiant_nom,$reset_code)
     {
-        $this->entreprise=$entreprise;
+        $this->etudiant_nom=$etudiant_nom;
+        $this->reset_code=$reset_code;
     }
 
     /**
@@ -29,8 +30,9 @@ class EntrepriseEmailVerificationMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown("pages.entreprise.emails.auth.entreprise_email_verification_mail")->with([
-            "entreprise"=>$this->entreprise
+        return $this->markdown('pages.etudiant.emails.forget_password_mail')->with([
+            "etudiant_nom"=>$this->etudiant_nom,
+            "reset_code"=>$this->reset_code
         ]);
     }
 }

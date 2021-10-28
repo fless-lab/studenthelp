@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertEtudiantController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PagesController;
@@ -48,6 +49,11 @@ Route::group(["middleware" => ["etudiant_bhist"]], function () {
             Route::post("/inscription/check_matricule_unique", [EtudiantController::class, "check_matricule_unique"])->name("etudiant.check_matricule_unique");
 
             Route::get("/inscription/verifier-mail/{verification_code}", [EtudiantController::class, "verify_email"])->name("etudiant.verifier_mail");
+
+            Route::get("/mot-de-passe-oublie",[EtudiantController::class,"mot_de_passe_oublie"])->name("etudiant.forgetPass");
+            Route::post("/mot-de-passe-oublie",[EtudiantController::class,"reset_mot_de_passe_link"])->name("etudiant.resetPass");
+
+            Route::get("/reinitialier-mot-de-passe/{reset_code}",[EtudiantController::class,"reset_mot_de_passe"])->name("etudiant.reset_password");
         });
 
         Route::get("/deconnexion", [EtudiantController::class, "deconnecterEtudiant"])->name("etudiant.deconnecter")->middleware("etudiant_auth");
@@ -66,6 +72,14 @@ Route::group(["middleware" => ["etudiant_bhist"]], function () {
 
             // Projet
             Route::resource('/projet', ProjetController::class);
+
+            //Stages
+            Route::get("/stages", [EtudiantController::class, "voirAllStages"])->name("etudiant.stages");
+            Route::get("/stages/{mime}", [EtudiantController::class, "voirLeStage"])->name("etudiant.stage");
+
+            //Jobs
+            Route::get("/jobs", [EtudiantController::class, "voirAllJobs"])->name("etudiant.jobs");
+            Route::get("/jobs/{mime}", [EtudiantController::class, "voirLeJob"])->name("etudiant.job");
         });
     });
 });
@@ -89,19 +103,22 @@ Route::group(["prefix" => "entreprise"], function () {
 
     Route::get("/deconnexion", [EntrepriseController::class, "deconnecterEntreprise"])->name("entreprise.deconnecter")->middleware("entreprise_auth");
 
-        Route::group(["middleware" => ["entreprise_auth"]], function () {
+    Route::group(["middleware" => ["entreprise_auth"]], function () {
 
-            // Profile
-            Route::get("/profile", [EntrepriseController::class, "profile"])->name("entreprise.profile");
+        // Profile
+        Route::get("/profile", [EntrepriseController::class, "profile"])->name("entreprise.profile");
 
-            Route::get("/changer-mon-mot-de-passe", [EntrepriseController::class, "change_password"])->name("entreprise.change_password");
-            Route::post("/changer-mon-mot-de-passe", [EntrepriseController::class, "update_password"])->name("entreprise.update_password");
+        Route::get("/changer-mon-mot-de-passe", [EntrepriseController::class, "change_password"])->name("entreprise.change_password");
+        Route::post("/changer-mon-mot-de-passe", [EntrepriseController::class, "update_password"])->name("entreprise.update_password");
 
-            Route::get("/editer-mon-profile", [EntrepriseController::class, "edit_profile"])->name("entreprise.edit_profile");
-            Route::put("/editer-mon-profile", [EntrepriseController::class, "update_profile"])->name("entreprise.update_profile");
+        Route::get("/editer-mon-profile", [EntrepriseController::class, "edit_profile"])->name("entreprise.edit_profile");
+        Route::put("/editer-mon-profile", [EntrepriseController::class, "update_profile"])->name("entreprise.update_profile");
+
+        Route::get("/projets", [EntrepriseController::class, "voirAllProjets"])->name("entreprise.projets");
+        Route::get("/projets/{mime}", [EntrepriseController::class, "voirLeProjet"])->name("entreprise.projet");
 
 
-
-        });
-
+        //Alerte (Jobs/Stages)
+        Route::resource('/alert-etudiant', AlertEtudiantController::class);
+    });
 });

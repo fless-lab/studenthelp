@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AlertEtudiant;
+use App\Models\Entreprise;
 use Illuminate\Http\Request;
 
 class AlertEtudiantController extends Controller
@@ -14,7 +15,8 @@ class AlertEtudiantController extends Controller
      */
     public function index()
     {
-        //
+        $alerts = AlertEtudiant::where("entreprise_id",session("entreprise.id"))->get();
+        return view("pages.entreprise.profile.services.alertes.index",["alerts"=>$alerts]);
     }
 
     /**
@@ -24,7 +26,7 @@ class AlertEtudiantController extends Controller
      */
     public function create()
     {
-        //
+        return view("pages.entreprise.profile.services.alertes.create");
     }
 
     /**
@@ -35,7 +37,18 @@ class AlertEtudiantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // dd($request);
+        AlertEtudiant::create([
+            "titre" => $request->input("titre"),
+            "tag" => $request->input("tag"),
+            "description"=>$request->input("description"),
+            "entreprise_id" => $request->input("entreprise_id"),
+            "mime" => $request->input("mime"),
+            "lien"=>$request->input("lien")
+        ]);
+
+        return redirect()->back()->with('success',"Offre créé avec succès.");
     }
 
     /**
@@ -44,9 +57,10 @@ class AlertEtudiantController extends Controller
      * @param  \App\Models\AlertEtudiant  $alertEtudiant
      * @return \Illuminate\Http\Response
      */
-    public function show(AlertEtudiant $alertEtudiant)
+    public function show($mime)
     {
-        //
+        $alert = AlertEtudiant::where("mime",$mime)->first();
+        return view("pages.entreprise.profile.services.alertes.show",["alert"=>$alert]);
     }
 
     /**
@@ -55,9 +69,10 @@ class AlertEtudiantController extends Controller
      * @param  \App\Models\AlertEtudiant  $alertEtudiant
      * @return \Illuminate\Http\Response
      */
-    public function edit(AlertEtudiant $alertEtudiant)
+    public function edit($mime)
     {
-        //
+        $alert = AlertEtudiant::where("mime",$mime)->first();
+        return view("pages.entreprise.profile.services.alertes.edit",["alert"=>$alert]);
     }
 
     /**
@@ -67,9 +82,16 @@ class AlertEtudiantController extends Controller
      * @param  \App\Models\AlertEtudiant  $alertEtudiant
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AlertEtudiant $alertEtudiant)
+    public function update(Request $request,$mime)
     {
-        //
+        AlertEtudiant::where("mime",$mime)->update([
+            "titre" => $request->input("titre"),
+            "tag" => $request->input("tag"),
+            "lien"=>$request->input("lien"),
+            "description"=>$request->input("description"),
+        ]);
+
+        return redirect()->back()->with('success',"Mise à jour effectuée avec succès.");
     }
 
     /**
@@ -78,8 +100,10 @@ class AlertEtudiantController extends Controller
      * @param  \App\Models\AlertEtudiant  $alertEtudiant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AlertEtudiant $alertEtudiant)
+    public function destroy($mime)
     {
-        //
+        $alert = AlertEtudiant::where("mime",$mime)->first();
+        $alert->delete();
+        return redirect()->route("alert-etudiant.index");
     }
 }

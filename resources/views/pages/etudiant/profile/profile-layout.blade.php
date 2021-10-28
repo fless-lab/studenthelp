@@ -34,12 +34,12 @@
                         Proposer des projets d'interêt
                     </li>
                 </a>
-                <a href="#" class="">
+                <a href="{{route('etudiant.jobs')}}" class="{{(request()->route()->getName()=='etudiant.jobs')?'active-link':''}}">
                     <li class="list-group-item">
                         Jobs Vaccances
                     </li>
                 </a>
-                <a href="#" class="">
+                <a href="{{route('etudiant.stages')}}" class="{{(request()->route()->getName()=='etudiant.stages')?'active-link':''}}">
                     <li class="list-group-item">
                         Voir les offres de stages
                     </li>
