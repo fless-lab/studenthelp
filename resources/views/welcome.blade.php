@@ -23,7 +23,7 @@
         </nav>
 
         {{-- Affichage principale --}}
-        <header class="masthead">
+        <header class="masthead" id="acceuil">
             <div class="container position-relative">
                 <div class="row justify-content-center">
                     <div class="col-xl-6">
@@ -65,7 +65,7 @@
         </section>
 
         <!-- Testimonials-->
-        <section class="testimonials text-center">
+        <section class="testimonials text-center" id="about">
             <div class="container">
                 <h2 class="mb-5">Qui somme nous ?</h2>
                 <div class="row">
@@ -104,24 +104,24 @@
                 <div class="row center mx-auto">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
-                            <li class="list-inline-item"><a href="#!">Accueil</a></li>
+                            <li class="list-inline-item"><a href="#acceuil">Accueil</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Contact</a></li>
+                            <li class="list-inline-item"><a href="#contact">Contact</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Qui sommes nous ?</a></li>
+                            <li class="list-inline-item"><a href="#about">Qui sommes nous ?</a></li>
                         </ul>
                         <p class="text-muted small mb-4 mb-lg-0">&copy; studenthelp.org. Tous droits reservés.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item me-4">
-                                <a href="#!"><i class="bi-whatsapp fs-3"></i></a>
+                                <a href="https://api.whatsapp.com/send?phone=22896858733" target="_blank"><i class="bi-whatsapp fs-3"></i></a>
                             </li>
                             <li class="list-inline-item me-4">
-                                <a href="#!"><i class="bi-linkedin fs-3"></i></a>
+                                <a href="https://www.linkedin.com/in/abdou-raouf-atarmla-9184301b8/" target="_blank"><i class="bi-linkedin fs-3"></i></a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!"><i class="bi-envelope fs-3"></i></a>
+                                <a href="mailto:achilleatarmla@gmail.com" target="_blank"><i class="bi-envelope fs-3"></i></a>
                             </li>
                         </ul>
                     </div>
